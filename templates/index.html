@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechSaathi AI - Smart Study Copilot</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+</head>
+<body>
+    <!-- Top Navbar -->
+    <nav class="navbar">
+        <div class="navbar-left">
+            <h1 class="app-title">TechSaathi AI</h1>
+        </div>
+        <div class="navbar-center">
+            <select id="modeSelector" class="mode-selector">
+                <option value="chat">💬 Chat</option>
+                <option value="code">💻 Code Debug</option>
+                <option value="exam">📝 Exam Questions</option>
+                <option value="study_plan">📚 Study Plan</option>
+                <option value="timetable">📅 Timetable Creator</option>
+                <option value="document">📄 Document Q&A</option>
+            </select>
+        </div>
+        <div class="navbar-right">
+            <button id="themeToggle" class="theme-toggle" title="Toggle theme">🌙</button>
+            <a href="/dashboard" class="dashboard-link">📊 Dashboard</a>
+        </div>
+    </nav>
+
+    <div class="main-container">
+        <!-- Left Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>Documents</h2>
+            </div>
+            <div class="sidebar-actions">
+                <button id="newChatBtn" class="btn btn-secondary">➕ New Chat</button>
+                <label for="fileInput" class="btn btn-primary">📤 Upload PDF</label>
+                <input type="file" id="fileInput" accept="application/pdf" style="display: none;">
+            </div>
+            <div id="documentsList" class="documents-list">
+                <!-- Documents will be loaded here -->
+            </div>
+        </aside>
+
+        <!-- Main Chat Area -->
+        <main class="chat-container">
+            <!-- Mode Instructions -->
+            <div id="modeInstructions" class="mode-instructions">
+                <div class="mode-info" data-mode="chat">
+                    <h3>💬 Chat Mode</h3>
+                    <p>Ask me anything! I'm here to help with your studies, explain concepts, and answer questions.</p>
+                </div>
+                <div class="mode-info" data-mode="code" style="display: none;">
+                    <h3>💻 Code Debug Mode</h3>
+                    <p>Paste your code below and I'll help you find bugs, explain what it does, and suggest improvements.</p>
+                </div>
+                <div class="mode-info" data-mode="exam" style="display: none;">
+                    <h3>📝 Exam Questions Mode</h3>
+                    <p>Tell me a topic and I'll generate 5 practice questions with answers to help you prepare!</p>
+                </div>
+                <div class="mode-info" data-mode="study_plan" style="display: none;">
+                    <h3>📚 Study Plan Mode</h3>
+                    <p>Tell me what subject you want to study and I'll create a detailed 7-day study plan for you.</p>
+                </div>
+                <div class="mode-info" data-mode="timetable" style="display: none;">
+                    <h3>📅 Timetable Creator Mode</h3>
+                    <p>List your subjects and study hours. Example: "Math, Physics, Chemistry - 6 hours daily, 6 AM to 12 PM"</p>
+                </div>
+                <div class="mode-info" data-mode="document" style="display: none;">
+                    <h3>📄 Document Q&A Mode</h3>
+                    <p>Upload a PDF from the sidebar, select it, then ask me questions about its content!</p>
+                </div>
+            </div>
+
+            <div id="chatMessages" class="chat-messages">
+                <div class="welcome-message">
+                    <h2>Welcome to TechSaathi AI! <span class="wave-emoji">👋</span></h2>
+                    <p>Your smart study companion. Select a mode and start chatting!</p>
+                </div>
+            </div>
+
+            <!-- Typing Indicator -->
+            <div id="typingIndicator" class="typing-indicator" style="display: none;">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+
+            <!-- Input Area -->
+            <div class="input-area">
+                <textarea 
+                    id="messageInput" 
+                    class="message-input" 
+                    placeholder="Type your message... (Press Enter to send, Shift+Enter for new line)"
+                    rows="1"
+                ></textarea>
+                <button id="sendBtn" class="btn btn-send">Send</button>
+            </div>
+        </main>
+    </div>
+
+    <!-- Notification Container -->
+    <div id="notificationContainer" class="notification-container"></div>
+
+    <!-- External Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    
+    <!-- Custom Scripts -->
+    <script src="/static/js/theme.js?v=16"></script>
+    <script src="/static/js/markdown.js?v=16"></script>
+    <script src="/static/js/upload.js?v=16"></script>
+    <script src="/static/js/chat.js?v=16"></script>
+    
+    <script>
+        // Initialize all components on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            window.themeManager = new ThemeManager();
+            window.uploadManager = new UploadManager();
+            window.chatManager = new ChatManager();
+            
+            // Load documents
+            window.uploadManager.loadDocuments();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - TechSaathi AI</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+</head>
+<body>
+    <!-- Top Navbar -->
+    <nav class="navbar">
+        <div class="navbar-left">
+            <h1 class="app-title">📊 TechSaathi AI Dashboard</h1>
+        </div>
+        <div class="navbar-right">
+            <button id="themeToggle" class="theme-toggle" title="Toggle theme">🌙</button>
+            <a href="/" class="dashboard-link">💬 Back to Chat</a>
+        </div>
+    </nav>
+
+    <div class="dashboard-container">
+        <div class="dashboard-header">
+            <div class="dashboard-title">
+                <h2>Your Learning Journey</h2>
+                <p>Track your progress and achievements with TechSaathi AI</p>
+            </div>
+            <div class="dashboard-summary">
+                <div class="summary-item">
+                    <span class="summary-label">Total Activities</span>
+                    <span class="summary-value">{{ stats.total_chats + stats.total_study_plans + stats.total_exams + stats.total_code_debugs + stats.total_timetables }}</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="stats-grid">
+            <div class="stat-card stat-card-primary">
+                <div class="stat-header">
+                    <div class="stat-icon">📄</div>
+                    <div class="stat-trend">+{{ stats.total_documents }}</div>
+                </div>
+                <div class="stat-value">{{ stats.total_documents }}</div>
+                <div class="stat-label">Documents Uploaded</div>
+                <div class="stat-footer">Learning materials</div>
+            </div>
+            
+            <div class="stat-card stat-card-success">
+                <div class="stat-header">
+                    <div class="stat-icon">💬</div>
+                    <div class="stat-trend">+{{ stats.total_chats }}</div>
+                </div>
+                <div class="stat-value">{{ stats.total_chats }}</div>
+                <div class="stat-label">Chat Interactions</div>
+                <div class="stat-footer">Questions answered</div>
+            </div>
+            
+            <div class="stat-card stat-card-info">
+                <div class="stat-header">
+                    <div class="stat-icon">📚</div>
+                    <div class="stat-trend">+{{ stats.total_study_plans }}</div>
+                </div>
+                <div class="stat-value">{{ stats.total_study_plans }}</div>
+                <div class="stat-label">Study Plans</div>
+                <div class="stat-footer">Organized schedules</div>
+            </div>
+            
+            <div class="stat-card stat-card-warning">
+                <div class="stat-header">
+                    <div class="stat-icon">📝</div>
+                    <div class="stat-trend">+{{ stats.total_exams }}</div>
+                </div>
+                <div class="stat-value">{{ stats.total_exams }}</div>
+                <div class="stat-label">Exam Sets</div>
+                <div class="stat-footer">Practice questions</div>
+            </div>
+            
+            <div class="stat-card stat-card-danger">
+                <div class="stat-header">
+                    <div class="stat-icon">💻</div>
+                    <div class="stat-trend">+{{ stats.total_code_debugs }}</div>
+                </div>
+                <div class="stat-value">{{ stats.total_code_debugs }}</div>
+                <div class="stat-label">Code Debugs</div>
+                <div class="stat-footer">Problems solved</div>
+            </div>
+            
+            <div class="stat-card stat-card-primary">
+                <div class="stat-header">
+                    <div class="stat-icon">📅</div>
+                    <div class="stat-trend">+{{ stats.total_timetables }}</div>
+                </div>
+                <div class="stat-value">{{ stats.total_timetables }}</div>
+                <div class="stat-label">Timetables Created</div>
+                <div class="stat-footer">Weekly schedules</div>
+            </div>
+        </div>
+
+        <div class="dashboard-footer">
+            <div class="progress-section">
+                <h3>📈 Learning Progress Overview</h3>
+                <div class="charts-row">
+                    <div class="chart-container">
+                        <h4>Activity Distribution</h4>
+                        <canvas id="pieChart"></canvas>
+                    </div>
+                    <div class="chart-container">
+                        <h4>Activity Counts</h4>
+                        <canvas id="barChart"></canvas>
+                    </div>
+                </div>
+                <div class="progress-bars">
+                    <div class="progress-item">
+                        <div class="progress-header">
+                            <span>💬 Chat Interactions</span>
+                            <span class="progress-count">{{ stats.total_chats }}</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" data-value="{{ stats.total_chats }}"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="progress-item">
+                        <div class="progress-header">
+                            <span>📚 Study Plans Created</span>
+                            <span class="progress-count">{{ stats.total_study_plans }}</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" data-value="{{ stats.total_study_plans }}"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="progress-item">
+                        <div class="progress-header">
+                            <span>📝 Exam Practice Sets</span>
+                            <span class="progress-count">{{ stats.total_exams }}</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" data-value="{{ stats.total_exams }}"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="progress-item">
+                        <div class="progress-header">
+                            <span>💻 Code Problems Solved</span>
+                            <span class="progress-count">{{ stats.total_code_debugs }}</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" data-value="{{ stats.total_code_debugs }}"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="progress-item">
+                        <div class="progress-header">
+                            <span>📅 Timetables Organized</span>
+                            <span class="progress-count">{{ stats.total_timetables }}</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" data-value="{{ stats.total_timetables }}"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-message">
+                <h3>🎓 Keep Learning!</h3>
+                <p>You're making great progress. Continue using TechSaathi AI to achieve your learning goals.</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/js/theme.js"></script>
+    <script>
+        // Initialize theme manager
+        document.addEventListener('DOMContentLoaded', () => {
+            window.themeManager = new ThemeManager();
+            
+            // Get stats data
+            const stats = {
+                chats: {{ stats.total_chats }},
+                studyPlans: {{ stats.total_study_plans }},
+                exams: {{ stats.total_exams }},
+                codeDebugs: {{ stats.total_code_debugs }},
+                timetables: {{ stats.total_timetables }}
+            };
+            
+            // Create pie chart
+            const pieCtx = document.getElementById('pieChart').getContext('2d');
+            const isDarkMode = document.body.classList.contains('dark-mode');
+            
+            new Chart(pieCtx, {
+                type: 'pie',
+                data: {
+                    labels: ['Chat', 'Study Plans', 'Exams', 'Code Debug', 'Timetables'],
+                    datasets: [{
+                        data: [stats.chats, stats.studyPlans, stats.exams, stats.codeDebugs, stats.timetables],
+                        backgroundColor: [
+                            '#6bb3ff',
+                            '#9c27b0',
+                            '#ff9800',
+                            '#f44336',
+                            '#4caf50'
+                        ],
+                        borderColor: isDarkMode ? '#1a1a1a' : '#ffffff',
+                        borderWidth: 3,
+                        hoverOffset: 10
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    layout: {
+                        padding: {
+                            bottom: 20
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'bottom',
+                            labels: {
+                                color: '#ffffff',
+                                font: {
+                                    size: 13,
+                                    weight: '600'
+                                },
+                                padding: 15,
+                                usePointStyle: false,
+                                boxWidth: 15,
+                                boxHeight: 15
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: isDarkMode ? '#2d2d2d' : '#ffffff',
+                            titleColor: isDarkMode ? '#ffffff' : '#1a1a1a',
+                            bodyColor: isDarkMode ? '#b0b0b0' : '#666666',
+                            borderColor: isDarkMode ? '#404040' : '#d0d0d0',
+                            borderWidth: 1,
+                            padding: 12,
+                            callbacks: {
+                                label: function(context) {
+                                    const label = context.label || '';
+                                    const value = context.parsed || 0;
+                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                    const percentage = total > 0 ? ((value / total) * 100).toFixed(1) : 0;
+                                    return label + ': ' + value + ' (' + percentage + '%)';
+                                }
+                            }
+                        }
+                    },
+                    animation: {
+                        animateRotate: true,
+                        animateScale: true,
+                        duration: 1500
+                    }
+                }
+            });
+            
+            // Create bar chart
+            const barCtx = document.getElementById('barChart').getContext('2d');
+            
+            new Chart(barCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Chat', 'Study Plans', 'Exams', 'Code Debug', 'Timetables'],
+                    datasets: [{
+                        label: 'Activities',
+                        data: [stats.chats, stats.studyPlans, stats.exams, stats.codeDebugs, stats.timetables],
+                        backgroundColor: [
+                            '#6bb3ff',
+                            '#9c27b0',
+                            '#ff9800',
+                            '#f44336',
+                            '#4caf50'
+                        ],
+                        borderColor: [
+                            '#6bb3ff',
+                            '#9c27b0',
+                            '#ff9800',
+                            '#f44336',
+                            '#4caf50'
+                        ],
+                        borderWidth: 2,
+                        borderRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    layout: {
+                        padding: {
+                            bottom: 10
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            backgroundColor: isDarkMode ? '#2d2d2d' : '#ffffff',
+                            titleColor: isDarkMode ? '#ffffff' : '#1a1a1a',
+                            bodyColor: isDarkMode ? '#b0b0b0' : '#666666',
+                            borderColor: isDarkMode ? '#404040' : '#d0d0d0',
+                            borderWidth: 1,
+                            padding: 12
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                stepSize: 1,
+                                color: '#ffffff',
+                                font: {
+                                    size: 12,
+                                    weight: '500'
+                                }
+                            },
+                            grid: {
+                                color: isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)'
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                color: '#ffffff',
+                                font: {
+                                    size: 12,
+                                    weight: '500'
+                                }
+                            },
+                            grid: {
+                                display: false
+                            }
+                        }
+                    },
+                    animation: {
+                        duration: 1500,
+                        easing: 'easeInOutQuart'
+                    }
+                }
+            });
+            
+            // Animate progress bars
+            const progressFills = document.querySelectorAll('.progress-fill');
+            const values = Array.from(progressFills).map(el => parseInt(el.dataset.value) || 0);
+            const maxValue = Math.max(...values, 1);
+            
+            progressFills.forEach((fill, index) => {
+                const value = values[index];
+                const percentage = (value / maxValue) * 100;
+                
+                setTimeout(() => {
+                    fill.style.width = percentage + '%';
+                }, 100 * index);
+            });
+        });
+    </script>
+</body>
+</html>
