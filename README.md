@@ -2,6 +2,8 @@
 
 An AI-powered web application designed to assist students with learning activities including AI tutoring, code debugging, exam question generation, study plan creation, and document-based question answering.
 
+Deployed at : https://web-production-229c5.up.railway.app/
+
 ## Features
 
 - 💬 **AI Chat**: General tutoring and question answering
