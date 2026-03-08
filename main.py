@@ -17,6 +17,17 @@ from services.s3_service import S3Service
 # Load environment variables
 load_dotenv()
 
+required_env_vars = [
+    "GROQ_API_KEY",
+    "AWS_S3_BUCKET_NAME",
+    "AWS_ACCESS_KEY_ID",
+    "AWS_SECRET_ACCESS_KEY"
+]
+
+for var in required_env_vars:
+    if not os.getenv(var):
+        raise RuntimeError(f"Missing required environment variable: {var}")
+    
 # Configure logging
 logging.basicConfig(
     level=logging.INFO,
@@ -49,7 +60,8 @@ templates = Jinja2Templates(directory="templates")
 
 # Initialize services
 try:
-    ai_service = AIService(api_key=os.getenv("GROQ_API_KEY"))
+    groq_key = os.getenv("GROQ_API_KEY")
+    ai_service = AIService(api_key=groq_key)
     s3_service = S3Service(
         bucket_name=os.getenv("AWS_S3_BUCKET_NAME"),
         aws_access_key=os.getenv("AWS_ACCESS_KEY_ID"),
@@ -272,6 +284,3 @@ async def dashboard(request: Request):
         "stats": dashboard_stats
     })
 
-if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
